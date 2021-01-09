@@ -68,6 +68,11 @@ on boot
     # Set ASUS-specific properties
     exec u:r:recovery:s0 root root -- /sbin/set_version.sh
 
+    # Double tap to wake
+    chown system system /proc/tpd_gesture
+    chmod 644 /proc/tpd_gesture
+    write /proc/tpd_gesture 1
+
 on property:crypto.ready=0
     stop sbinqseecomd
     stop keymaster-3-0
