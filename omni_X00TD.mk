@@ -23,3 +23,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.controller=a800000.dwc3 \
     sys.usb.rndis.func.name=rndis_bam \
     sys.usb.rmnet.func.name=rmnet_bam
+
+# for stock ROM
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.CID=CID_ERROR \
+    ro.hq.project=ZQL1650
