@@ -16,3 +16,6 @@ PRODUCT_NAME := omni_X00TD
 PRODUCT_BRAND := asus
 PRODUCT_MODEL := Zenfone Max Pro M1
 PRODUCT_MANUFACTURER := asus
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.keystore=sdm660
