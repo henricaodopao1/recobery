@@ -22,7 +22,6 @@ PRODUCT_MODEL := Zenfone Max Pro M1
 PRODUCT_MANUFACTURER := asus
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.keystore=sdm660 \
     ro.hardware.gatekeeper=sdm660 \
     sys.usb.controller=a800000.dwc3 \
     sys.usb.rndis.func.name=rndis_bam \
