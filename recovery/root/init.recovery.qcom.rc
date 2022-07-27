@@ -18,6 +18,6 @@ on boot
     exec u:r:recovery:s0 root root -- /system/bin/set_version.sh
 
     # Double tap to wake
-    chown system system /proc/tpd_gesture
-    chmod 644 /proc/tpd_gesture
-    write /proc/tpd_gesture 1
+    chown system system /sys/kernel/touchpanel/dclicknode
+    chmod 0660 /sys/kernel/touchpanel/dclicknode
+    write /sys/kernel/touchpanel/dclicknode 1
