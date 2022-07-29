@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-DEVICE_PATH := device/asus/X00TD
+DEVICE_PATH := device/asus/X00QD
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
@@ -24,9 +24,6 @@ TARGET_2ND_CPU_VARIANT := cortex-a73
 TARGET_BOARD_SUFFIX := _64
 TARGET_USES_64_BIT_BINDER := true
 
-# Assert
-TARGET_OTA_ASSERT_DEVICE := ASUS_X00TD,X00TD,X00T
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sdm660
 TARGET_NO_BOOTLOADER := true
@@ -35,14 +32,17 @@ TARGET_NO_BOOTLOADER := true
 TW_INCLUDE_CRYPTO := true
 BOARD_USES_QCOM_FBE_DECRYPTION := true
 
-# File systems
-BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
-BOARD_CACHEIMAGE_PARTITION_SIZE := 367001600
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 4294967296
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 55490624512
-BOARD_VENDORIMAGE_PARTITION_SIZE := 838860800
+BOARD_FLASH_BLOCK_SIZE := 262144
+BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 33554432
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_CACHEIMAGE_PARTITION_SIZE := 134217728
+BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3758096384
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 55940840960
+BOARD_VENDORIMAGE_PARTITION_SIZE := 1073741824
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+
 
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
@@ -60,17 +60,23 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 
 # Kernel
-BOARD_KERNEL_CMDLINE := earlycon=msm_serial_dm,0xc170000 androidboot.hardware=qcom ehci-hcd.park=3
-BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1
-BOARD_KERNEL_CMDLINE += service_locator.enable=1 swiotlb=1 androidboot.configfs=true
-BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a800000.dwc3 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz-dtb
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 
+BOARD_KERNEL_CMDLINE += androidboot.console=ttyMSM0 androidboot.hardware=qcom
+BOARD_KERNEL_CMDLINE += androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3
+BOARD_KERNEL_CMDLINE += earlycon=msm_serial_dm,0xc170000 msm_rtb.filter=0x37 ehci-hcd.park=3
+BOARD_KERNEL_CMDLINE += sched_enable_hmp=1 sched_enable_power_aware=1
+BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 service_locator.enable=1 swiotlb=1
+BOARD_KERNEL_CMDLINE += user_debug=31 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
-BOARD_RAMDISK_OFFSET := 0x01000000
-BOARD_KERNEL_TAGS_OFFSET := 0x00000100
-BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+TARGET_KERNEL_ARCH := arm64
+# TARGET_KERNEL_CONFIG := X00QD_defconfig
+# TARGET_KERNEL_SOURCE := kernel/asus/X00QD
+# Only when you don't have the source
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz-dtb
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm660
@@ -81,7 +87,7 @@ LZMA_RAMDISK_TARGETS := recovery
 
 # TWRP Configuration
 RECOVERY_SDCARD_ON_DATA := true
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/twrp.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
